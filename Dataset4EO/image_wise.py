@@ -8,7 +8,7 @@ def create_full_image(index):
     Create a full 10-channel multispectral GeoTIFF image and return it as tar bytes.
     """
     # Simulate a multispectral image (e.g., Sentinel-2 with 10 channels)
-    image_array = np.random.rand(256, 256, 10).astype(np.float32)  # Reflectance data [0, 1]
+    image_array = np.random.rand(256, 256, 10).astype(np.uint8)  # Reflectance data [0, 1]
 
     # Save the full image as a GeoTIFF to an in-memory buffer
     buffer = BytesIO()

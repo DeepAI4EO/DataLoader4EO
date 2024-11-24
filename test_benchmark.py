@@ -11,7 +11,7 @@ def create_channel_wise_image(index):
     """
     Create a channel-wise chunked dataset from a 10-channel multispectral image.
     """
-    image_array = np.random.rand(256, 256, 10).astype(np.float32)  # Simulate reflectance data [0, 1]
+    image_array = np.random.rand(256, 256, 10).astype(np.uint8)  # Simulate reflectance data [0, 1]
     return create_channel_chunks(image_array, metadata={"label": np.random.randint(10)})
 
 def prepare_datasets():
