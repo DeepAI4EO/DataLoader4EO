@@ -35,7 +35,7 @@ def prepare_datasets():
         inputs=list(range(100)),  # Generate 10 samples
         output_dir="channel_wise_optimized_dataset",
         num_workers=4,
-        chunk_bytes="128MB"
+        chunk_bytes="128MB",
     )
     print("Channel-wise dataset created successfully.")
 
