@@ -1,37 +1,29 @@
 import litdata as ld
-import rasterio
 import numpy as np
+import h5py
 from io import BytesIO
 
-
-# Should try the HDF5 for random index and compress, the current version is slower than full image
 def create_channel_chunks(image_array, metadata=None):
     """
-    Create channel-wise chunks from a multi-channel image.
+    Create channel-wise chunks from a multi-channel image using HDF5.
 
     Args:
         image_array (numpy.ndarray): Multi-channel image array of shape (H, W, C).
         metadata (dict): Additional metadata to include with the chunks.
 
     Returns:
-        dict: A dictionary where each channel is stored as a separate chunk.
+        dict: A dictionary containing HDF5 data stored as bytes.
     """
-    chunks = {}
-    for channel_idx in range(image_array.shape[-1]):
-        buffer = BytesIO()
-        with rasterio.open(
-            buffer,
-            "w",
-            driver="GTiff",
-            height=image_array.shape[0],
-            width=image_array.shape[1],
-            count=1,
-            dtype=image_array.dtype,
-            compress="deflate"
-        ) as dst:
-            dst.write(image_array[..., channel_idx], 1)
-        buffer.seek(0)
-        chunks[f"channel_{channel_idx}"] = buffer.read()
+    buffer = BytesIO()
+    with h5py.File(buffer, 'w') as hdf5_file:
+        for channel_idx in range(image_array.shape[-1]):
+            hdf5_file.create_dataset(
+                f'channel_{channel_idx}',
+                data=image_array[..., channel_idx],
+                compression="gzip"
+            )
+    buffer.seek(0)
+    chunks = {'hdf5_data': buffer.read()}
 
     if metadata:
         chunks.update(metadata)
@@ -41,7 +33,7 @@ def create_channel_chunks(image_array, metadata=None):
 
 class ChannelWiseStreamingDataset(ld.StreamingDataset):
     """
-    Channel-wise streaming dataset extension for LitData.
+    Channel-wise streaming dataset extension using HDF5 for efficient channel access.
     """
     def __init__(self, input_dir, channels_to_select, **kwargs):
         super().__init__(input_dir, **kwargs)
@@ -49,14 +41,14 @@ class ChannelWiseStreamingDataset(ld.StreamingDataset):
 
     def __getitem__(self, index):
         sample = super().__getitem__(index)
+        hdf5_data = sample['hdf5_data']
+        buffer = BytesIO(hdf5_data)
         channels = []
 
-        for channel_idx in self.channels_to_select:
-            channel_key = f"channel_{channel_idx}"
-            channel_data = sample[channel_key]
-
-            with rasterio.open(BytesIO(channel_data)) as src:
-                channels.append(src.read(1))
+        with h5py.File(buffer, 'r') as hdf5_file:
+            for channel_idx in self.channels_to_select:
+                channel_data = hdf5_file[f'channel_{channel_idx}'][:]
+                channels.append(channel_data)
 
         sample["image"] = np.stack(channels, axis=-1)
         return sample
