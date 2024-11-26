@@ -1,11 +1,10 @@
 import os
 import h5py
 from torch.utils.data import Dataset
-from torchvision import transforms
-from PIL import Image
 import json
 import numpy as np
 import litdata as ld
+from utils import create_hdf5_chunk
 
 
 class GamusDataset(Dataset):
@@ -57,43 +56,49 @@ split = "train"
 
 dataset = GamusDataset(root_dir=root_dir, split=split)
 
-#pdb.set_trace()
-
-def process_sample(index):
+def create_channel_wise_image(index):
     """
-    Process a single sample from the GAMUS dataset and return LitData-compatible data.
+    Create a channel-wise chunked dataset from a 10-channel multispectral image.
     """
+    # Prepare data
     basename, image, class_label, height = dataset[index]
     # Convert the image to JPEG
-    image = image.transpose(1, 2, 0) * 255
-    image = image.astype(np.uint8)  # Convert to HWC
+    image = image * 255
+    image_array = image.astype(np.uint8)  # Convert to HWC
     # Convert class label to bytes
     class_data = class_label.astype(np.uint8)
     # Convert height map to bytes
     height_data = height.astype(np.float16)
 
-    return {
-        "name": basename,
-        "image": image,
-        "class": class_data,
-        "height": height_data,
+    metadata = {'sample_id': index, "base_name": basename, "split": "train", "geolocation": (-1,-1)}
+
+    # Create other data dictionary
+    other_data = {
+        'segmentation_map': class_data,
+        'height_map': height_data
     }
-    
-metadata = {
-    "Dataset": "GAMUS",
-    "split": split,
-    "num_samples": len(dataset),
-    "attributes": {
-        "name": {"dtype": "str"},
-        "image": {"dtype": "uint8", "format": "pil"},
-        "class": {"dtype": "uint8", "format": "pil"},
-        "height": {"dtype": "float16", "format": "numpy"},
-    },
-}
+
+    chunk = create_hdf5_chunk(
+        image_array=image_array,
+        other_data=other_data,
+        compression='gzip',
+        metadata=metadata
+    )
+    return chunk
 
 if __name__=="__main__":
+    metadata = {
+        "Dataset": "GAMUS",
+        "split": split,
+        "num_samples": len(dataset),
+        "attributes": {
+            "image": {"dtype": "uint8", "format": "pil"},
+            "class": {"dtype": "uint8", "format": "pil"},
+            "height": {"dtype": "float16", "format": "numpy"},
+        },
+    }
     ld.optimize(
-        fn=process_sample,
+        fn=create_channel_wise_image,
         inputs=list(range(len(dataset))),
         output_dir=output_dir,
         num_workers=8,

@@ -1,11 +1,11 @@
 import numpy as np
 import litdata as ld
-from Dataset4EO.channel_wise import create_channel_chunks
-from Dataset4EO.image_wise import create_full_image
+from channel_wise import create_channel_chunks
+from image_wise import create_full_image
 import time
 import psutil
-from Dataset4EO.channel_wise import ChannelWiseStreamingDataset
-from Dataset4EO.image_wise import FullImageStreamingDataset
+from channel_wise import ChannelWiseStreamingDataset
+from image_wise import FullImageStreamingDataset
 
 def create_channel_wise_image(index):
     """
