@@ -11,7 +11,7 @@ def create_channel_wise_image(index):
     """
     Create a channel-wise chunked dataset from a 10-channel multispectral image.
     """
-    image_array = np.random.rand(256, 256, 10).astype(np.uint8)  # Simulate reflectance data [0, 1]
+    image_array = np.random.rand(256, 256, 200).astype(np.uint8)  # Simulate reflectance data [0, 1]
     return create_channel_chunks(image_array, metadata={"label": np.random.randint(10)})
 
 def prepare_datasets():
@@ -22,7 +22,7 @@ def prepare_datasets():
     # Full Image Dataset
     ld.optimize(
         fn=create_full_image,
-        inputs=list(range(100)),  # Generate 10 samples
+        inputs=list(range(1000)),  # Generate 10 samples
         output_dir="full_image_optimized_dataset",
         num_workers=4,
         chunk_bytes="128MB"
@@ -32,7 +32,7 @@ def prepare_datasets():
     # Channel-Wise Dataset
     ld.optimize(
         fn=create_channel_wise_image,
-        inputs=list(range(100)),  # Generate 10 samples
+        inputs=list(range(1000)),  # Generate 10 samples
         output_dir="channel_wise_optimized_dataset",
         num_workers=4,
         chunk_bytes="128MB",
@@ -40,7 +40,7 @@ def prepare_datasets():
     print("Channel-wise dataset created successfully.")
 
 
-def benchmark_dataset(dataset, description, batch_size=32, num_samples=100):
+def benchmark_dataset(dataset, description, batch_size=32, num_samples=1000):
     """
     Benchmark a dataset's performance.
 
@@ -59,6 +59,7 @@ def benchmark_dataset(dataset, description, batch_size=32, num_samples=100):
     start_time = time.time()
     memory_before = process.memory_info().rss / (1024 * 1024)
 
+    #dataloader = ld.StreamingDataLoader(dataset, batch_size=batch_size, num_workers=0)
     dataloader = DataLoader(dataset, batch_size=batch_size, num_workers=0)
     total_samples = 0
     for batch in dataloader:
@@ -79,8 +80,8 @@ def benchmark_dataset(dataset, description, batch_size=32, num_samples=100):
 
 
 def test_benchmark():
-    channel_wise_dataset = ChannelWiseStreamingDataset("channel_wise_optimized_dataset", channels_to_select=[0, 1, 2])
-    full_image_dataset = FullImageStreamingDataset("full_image_optimized_dataset", channels_to_select=[0, 1, 2])
+    channel_wise_dataset = ChannelWiseStreamingDataset("channel_wise_optimized_dataset", channels_to_select=[0, 1, 2, 5, 8, 15, 29, 30, 58, 125, 114, 102, 185, 14, 18, 16])
+    full_image_dataset = FullImageStreamingDataset("full_image_optimized_dataset", channels_to_select=[0, 1, 2, 5, 8, 15, 29, 30, 58, 125, 114, 102, 185, 14, 18, 16])
 
     channel_wise_results = benchmark_dataset(channel_wise_dataset, "Channel-Wise")
     full_image_results = benchmark_dataset(full_image_dataset, "Full Image")

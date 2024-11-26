@@ -3,6 +3,8 @@ import rasterio
 import numpy as np
 from io import BytesIO
 
+
+# Should try the HDF5 for random index and compress, the current version is slower than full image
 def create_channel_chunks(image_array, metadata=None):
     """
     Create channel-wise chunks from a multi-channel image.

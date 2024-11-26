@@ -44,12 +44,6 @@ class GamusDataset(Dataset):
         with h5py.File(agl_path, 'r') as f:
             height = f['image'][()]
 
-        # Convert image to PIL Image for transforms
-        image = Image.fromarray(image.astype(np.uint8))
-
-        if self.transform:
-            image = self.transform(image)
-
         return (base_name, image, class_label, height)
 
 
@@ -61,11 +55,7 @@ output_dir = './optimized_gamus_dataset'
 
 split = "train"
 
-transform = transforms.Compose([
-        transforms.ToTensor(),
-    ])
-
-dataset = GamusDataset(root_dir=root_dir, split=split, transform=transform)
+dataset = GamusDataset(root_dir=root_dir, split=split)
 
 #pdb.set_trace()
 
@@ -75,10 +65,10 @@ def process_sample(index):
     """
     basename, image, class_label, height = dataset[index]
     # Convert the image to JPEG
-    image = image.numpy().transpose(1, 2, 0) * 255
-    image = Image.fromarray(image.astype(np.uint8))  # Convert to HWC
+    image = image.transpose(1, 2, 0) * 255
+    image = image.astype(np.uint8)  # Convert to HWC
     # Convert class label to bytes
-    class_data = Image.fromarray(class_label.astype(np.uint8))
+    class_data = class_label.astype(np.uint8)
     # Convert height map to bytes
     height_data = height.astype(np.float16)
 
