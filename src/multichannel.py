@@ -15,7 +15,6 @@ class ChannelwiseDataset(ld.StreamingDataset):
         self,
         input_dir: str,
         channels_to_select: List[int],
-        other_keys: Optional[List[str]] = None,
         **kwargs
     ):
         """
@@ -24,13 +23,11 @@ class ChannelwiseDataset(ld.StreamingDataset):
         Args:
             input_dir (str): Directory containing the dataset chunks.
             channels_to_select (List[int]): List of channel indices to load.
-            other_keys (Optional[List[str]]): List of other dataset names to load.
             transform (Optional[Callable]): Function to transform the loaded data.
             **kwargs: Additional arguments for StreamingDataset.
         """
         super().__init__(input_dir, **kwargs)
         self.channels_to_select = channels_to_select
-        self.other_keys = other_keys
 
     def __getitem__(self, index: int) -> Dict[str, Any]:
         sample = super().__getitem__(index)
@@ -42,7 +39,6 @@ class ChannelwiseDataset(ld.StreamingDataset):
         data_dict = load_hdf5_chunk(
             hdf5_data,
             channels_to_select=self.channels_to_select,
-            other_keys=self.other_keys
         )
         del sample["hdf5_data"]
 

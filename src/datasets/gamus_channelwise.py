@@ -2,7 +2,7 @@ import litdata as ld
 import time
 from multichannel import ChannelwiseDataset
 
-train_dataset2 = ChannelwiseDataset('./optimized_gamus_dataset', channels_to_select=[0,1,2], other_keys=["height_map"], shuffle=True, drop_last=True)
+train_dataset2 = ChannelwiseDataset('./optimized_gamus_dataset2', channels_to_select=[0,1,2], shuffle=True, drop_last=True)
 
 
 train_dataloader = ld.StreamingDataLoader(train_dataset2)

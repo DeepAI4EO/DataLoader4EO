@@ -36,17 +36,6 @@ def create_hdf5_chunk(
                 compression=compression,
                 compression_opts=compression_opts
             )
-        '''
-        # Store other data normally
-        for key, data in other_data.items():
-            hdf5_file.create_dataset(
-                name=key,
-                data=data,
-                compression=compression,
-                compression_opts=compression_opts,
-                dtype=data.dtype
-            )
-        '''
     buffer.seek(0)
     chunk = {'hdf5_data': buffer.read()}
     if metadata:
@@ -84,13 +73,4 @@ def load_hdf5_chunk(
                 else:
                     raise KeyError(f"Channel '{channel_name}' not found in HDF5 file.")
             data_dict['image'] = np.stack(channels, axis=-1)
-        '''
-        # Load other datasets
-        if other_keys is not None:
-            for key in other_keys:
-                if key in hdf5_file:
-                    data_dict[key] = hdf5_file[key][:]
-                else:
-                    raise KeyError(f"Dataset '{key}' not found in HDF5 file.")
-        '''
     return data_dict

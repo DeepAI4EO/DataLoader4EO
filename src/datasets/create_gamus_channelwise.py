@@ -50,9 +50,9 @@ class GamusDataset(Dataset):
 ############################-Create optimized Dataset-###############################
 
 root_dir = '/home/xshadow/Datasets/GAMUS'  # Path to the original GAMUS dataset
-output_dir = './optimized_gamus_dataset'
+output_dir = './optimized_gamus_dataset2'
 
-split = "train"
+split = "val"
 
 dataset = GamusDataset(root_dir=root_dir, split=split)
 
@@ -63,7 +63,6 @@ def create_channel_wise_image(index):
     # Prepare data
     basename, image, class_label, height = dataset[index]
     # Convert the image to JPEG
-    image = image * 255
     image_array = image.astype(np.uint8)  # Convert to HWC
     # Convert class label to bytes
     class_data = class_label.astype(np.uint8)
