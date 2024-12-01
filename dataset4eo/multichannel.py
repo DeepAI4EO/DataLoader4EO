@@ -1,8 +1,8 @@
 
 #multichannel.py
-import litdata as ld
+import litdata as ld # type: ignore
 from typing import Any, Callable, Dict, List, Optional
-from utils import load_hdf5_chunk
+from .utils import load_hdf5_chunk
 
 class ChannelwiseDataset(ld.StreamingDataset):
     """

@@ -1,12 +1,9 @@
 import os
-import h5py
+import h5py # type: ignore
 from torch.utils.data import Dataset
-from torchvision import transforms
-from PIL import Image
 import json
 import numpy as np
-import litdata as ld
-
+import dataset4eo as eodata
 
 class GamusDataset(Dataset):
     def __init__(self, root_dir, split='train', transform=None):
@@ -51,13 +48,11 @@ class GamusDataset(Dataset):
 ############################-Create optimized Dataset-###############################
 
 split = "test"
-
 root_dir = '/home/xshadow/Datasets/GAMUS'  # Path to the original GAMUS dataset
 output_dir = f'./gamus_dataset_{split}'
 
-dataset = GamusDataset(root_dir=root_dir, split=split)
 
-#pdb.set_trace()
+dataset = GamusDataset(root_dir=root_dir, split=split)
 
 def process_sample(index):
     """
@@ -77,7 +72,8 @@ def process_sample(index):
         "class": class_data,
         "height": height_data,
     }
-    
+
+
 metadata = {
     "Dataset": "GAMUS",
     "split": split,
@@ -90,8 +86,9 @@ metadata = {
     },
 }
 
+
 if __name__=="__main__":
-    ld.optimize(
+    eodata.optimize(
         fn=process_sample,
         inputs=list(range(len(dataset))),
         output_dir=output_dir,

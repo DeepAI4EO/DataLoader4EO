@@ -1,12 +1,9 @@
-import pdb
-import litdata as ld
-from torchvision import transforms
+import dataset4eo as eodata
+import litdata as ld #type: ignore
 import time
 
-train_dataset = ld.StreamingDataset('./gamus_dataset_val', shuffle=True, drop_last=True)
-pdb.set_trace()
 
-
+train_dataset = eodata.StreamingDataset('./gamus_dataset_val', num_channels=3, shuffle=True, drop_last=True)
 train_dataloader = ld.StreamingDataLoader(train_dataset)
 
 iters = 0

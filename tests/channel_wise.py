@@ -1,6 +1,6 @@
-import litdata as ld
+import litdata as ld # type: ignore
 import numpy as np
-import h5py
+import h5py # type: ignore
 from io import BytesIO
 
 def create_channel_chunks(image_array, metadata=None):
