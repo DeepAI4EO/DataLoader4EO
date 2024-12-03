@@ -5,11 +5,18 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "Dataset4EO"
 version = "0.1.0"
-description = "Project with specific dependencies"
+description = "A Python package for Earth Observation datasets."
 authors = [
     { name = "Zhitong Xiong", email = "xiongzhitong@gmail.com" }
 ]
-
+license = { file = "LICENSE" }
+keywords = ["Earth Observation", "datasets", "remote sensing", "machine learning"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 
 dependencies = [
     "torch==2.1.2",
@@ -18,7 +25,20 @@ dependencies = [
     "torchgeo",
     "litdata",
     "fastparquet",
-    "litdata",
     "h5py",
 ]
 
+[project.urls]
+"Homepage" = "https://github.com/yourusername/Dataset4EO"
+"Source" = "https://github.com/yourusername/Dataset4EO"
+"Documentation" = "https://github.com/yourusername/Dataset4EO/docs"
+
+[tool.setuptools]
+packages = ["dataset4eo"]
+include_package_data = true
+
+[tool.setuptools.package-data]
+dataset4eo = ["resources/*"]
+
+[tool.setuptools.dynamic]
+version = { attr = "dataset4eo.__version__" }
