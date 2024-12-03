@@ -5,7 +5,6 @@ import numpy as np
 from io import BytesIO
 from typing import Any, Dict, List, Optional, Callable
 import litdata as ld # type: ignore
-import pdb
 
 from functools import wraps
 

@@ -18,5 +18,7 @@ dependencies = [
     "torchgeo",
     "litdata",
     "fastparquet",
+    "litdata",
+    "h5py",
 ]
 
