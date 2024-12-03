@@ -33,12 +33,6 @@ dependencies = [
 "Source" = "https://github.com/yourusername/Dataset4EO"
 "Documentation" = "https://github.com/yourusername/Dataset4EO/docs"
 
-[tool.setuptools]
-packages = ["dataset4eo"]
-include_package_data = true
-
-[tool.setuptools.package-data]
-dataset4eo = ["resources/*"]
-
-[tool.setuptools.dynamic]
-version = { attr = "dataset4eo.__version__" }
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["tests", "datasets"]
