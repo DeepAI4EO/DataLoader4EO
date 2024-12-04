@@ -3,7 +3,7 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "Dataset4EO"
+name = "StreamingDataset4EO"
 version = "0.1.0"
 description = "A Python package for Earth Observation datasets."
 authors = [
