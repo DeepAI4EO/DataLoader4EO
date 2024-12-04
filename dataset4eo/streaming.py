@@ -29,6 +29,7 @@ class StreamingDataset(ld.StreamingDataset):
         """
         self.num_channels = num_channels
         self._is_multichannel = num_channels > 3
+        self.input_dir = input_dir
 
         if self._is_multichannel:
             if channels_to_select is None:
