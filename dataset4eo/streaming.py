@@ -1,7 +1,7 @@
 from typing import Any, Dict, List, Optional
 import litdata as ld
 from dataset4eo.multichannel import ChannelwiseDataset
-
+from litdata.streaming.resolver import _resolve_dir
 
 class StreamingDataset(ld.StreamingDataset):
     """
@@ -29,7 +29,7 @@ class StreamingDataset(ld.StreamingDataset):
         """
         self.num_channels = num_channels
         self._is_multichannel = num_channels > 3
-        self.input_dir = input_dir
+        self.input_dir = _resolve_dir(input_dir)
 
         if self._is_multichannel:
             if channels_to_select is None:
