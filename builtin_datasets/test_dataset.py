@@ -6,7 +6,7 @@ def create_channel_wise_image(index):
     Create a channel-wise chunked dataset from a 10-channel multispectral image.
     """
     # Prepare data
-    image_array = np.random.rand(256, 256, 13)  # Multi-channel image data
+    image_array = np.random.rand(256, 256, 2)  # Multi-channel image data
     segmentation_map = np.random.randint(0, 5, (256, 256), dtype='uint8')
     depth_map = np.random.rand(256, 256).astype('float16')
 
@@ -37,8 +37,8 @@ if __name__=="__main__":
     # Initialize the dataset
     dataset = eodata.StreamingDataset(
         input_dir='optimized_channel_dataset',  # Directory where chunks are stored
-        num_channels = 13,
-        channels_to_select=[0, 1, 2, 8, 4, 5],  # Channels to load
+        num_channels = 2,
+        #channels_to_select=[0, 1, 2, 8, 4, 5],  # Channels to load
     )
 
     # Retrieve a sample

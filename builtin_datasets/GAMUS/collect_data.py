@@ -47,7 +47,7 @@ class GamusDataset(Dataset):
 
 ############################-Create optimized Dataset-###############################
 
-split = "test"
+split = "train"
 root_dir = '/home/xshadow/Datasets/GAMUS'  # Path to the original GAMUS dataset
 output_dir = f'./gamus_dataset_{split}'
 
@@ -61,6 +61,7 @@ def process_sample(index):
     basename, image, class_label, height = dataset[index]
     # Convert the image to JPEG
     image = image.astype(np.uint8)  # Convert to HWC
+    assert image.shape[-1] == 3
     # Convert class label to bytes
     class_data = class_label.astype(np.uint8)
     # Convert height map to bytes
