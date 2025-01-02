@@ -7,4 +7,7 @@ builtin_datasets = {
     "enmap_nlcd": 'XShadow/enmap_nlcd',
     "enmap_corine": 'XShadow/enmap_corine',
     "enmap_cdl": 'XShadow/enmap_cdl',
+    "firerisk": "snchen1230/FireRisk",
+    "patternnet": "snchen1230/PatternNet",
+    "usavars": "snchen1230/USAVars",
     }
