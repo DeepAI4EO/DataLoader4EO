@@ -10,4 +10,6 @@ builtin_datasets = {
     "firerisk": "snchen1230/FireRisk",
     "patternnet": "snchen1230/PatternNet",
     "usavars": "snchen1230/USAVars",
+    "deepglobelandcover": "snchen1230/DeepGlobeLandCover",
+    "dfc2022": "snchen1230/DFC2022",
     }
