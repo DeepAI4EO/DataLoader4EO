@@ -12,4 +12,12 @@ builtin_datasets = {
     "usavars": "snchen1230/USAVars",
     "deepglobelandcover": "snchen1230/DeepGlobeLandCover",
     "dfc2022": "snchen1230/DFC2022",
+    "etci2021": "snchen1230/ETCI2021",
+    "geonrw": "snchen1230/GeoNRW",
+    "inriaaerialimagelabeling": "snchen1230/InriaAerialImageLabeling",
+    "landcoverai": "snchen1230/LandCoverAI",
+    "levircd": "snchen1230/LEVIRCD",
+    "levircd+": "snchen1230/LEVIRCDPlus",
+    "gid-15": "snchen1230/GID-15",
+    "loveda": "snchen1230/LoveDA"
     }
