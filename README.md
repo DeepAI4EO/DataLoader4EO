@@ -82,6 +82,7 @@ if __name__ == "__main__":
 ```
 
 ### Builtin datasets
+Please check out all the supported datasets [here](https://huggingface.co/collections/earthflow/earthnets-654b99d686cad6da97a2f359).
 
 ```python
 import dataset4eo as eodata
